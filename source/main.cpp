@@ -4,14 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 using namespace std;
-void sleep(int milliseconds) 
-{
-    clock_t time_end;
-    time_end = clock() + milliseconds * CLOCKS_PER_SEC/1000;
-    while (clock() < time_end)
-    {
-    }
-}
+
 bool checkWin(button list[3][3],const char * player){
     for(int i = 0;i<3;i++){
         if(strcmp(list[i][0].value,list[i][1].value) == 0 && strcmp(list[i][1].value,list[i][2].value) == 0 && strcmp(list[i][2].value,player) == 0){
