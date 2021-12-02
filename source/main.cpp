@@ -1,10 +1,9 @@
 #include <iostream>
-#include "../headers/button.h"
-#include "raylib.h"
 #include <stdio.h>
 #include <string.h>
+#include "../headers/button.h"
+#include "raylib.h"
 using namespace std;
-
 bool checkWin(button list[3][3],const char * player){
     for(int i = 0;i<3;i++){
         if(strcmp(list[i][0].value,list[i][1].value) == 0 && strcmp(list[i][1].value,list[i][2].value) == 0 && strcmp(list[i][2].value,player) == 0){
@@ -46,6 +45,8 @@ int main(){
     button nine("-",600,600);
     button buttons[3][3] = {{one,two,three},{four,five,six},{seven,eight,nine}};
     InitWindow(screenWidth,screenHeight,"tic tac toe");
+    InitAudioDevice();
+    Sound click = LoadSound("../resources/click.wav");
     while(!WindowShouldClose()){
         BeginDrawing();
             ClearBackground(BLACK);
@@ -58,6 +59,7 @@ int main(){
             for(int i = 0;i<3;i++){
                 for(int j = 0;j<3;j++){
                     if(buttons[i][j].isClicked() && strcmp(buttons[i][j].value,"-") == 0){
+                        PlaySound(click);
                         buttons[i][j].value = player;
                         if(strcmp(player,"x") == 0){
                             player = "o";
