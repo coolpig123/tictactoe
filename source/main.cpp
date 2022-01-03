@@ -33,7 +33,12 @@ int main(){
     const int screenWidth = 900;
     const int screenHeight = 900;
     const char * player = "x";
+    bool random = true;
     bool win = false;
+    bool isFree = false;
+    bool randomChoose = true;
+    int randomOne = GetRandomValue(0,2);
+    int randomTwo = GetRandomValue(0,2);
     button one("-",0,0);
     button two("-",300,0);
     button three("-",600,0);
@@ -48,6 +53,7 @@ int main(){
     InitAudioDevice();
     Sound click = LoadSound("../resources/click.wav");
     while(!WindowShouldClose()){
+        isFree = false;
         BeginDrawing();
             ClearBackground(BLACK);
             if(!win){
@@ -56,19 +62,49 @@ int main(){
                         buttons[i][j].draw();
                     }
                 }
-            for(int i = 0;i<3;i++){
-                for(int j = 0;j<3;j++){
-                    if(buttons[i][j].isClicked() && strcmp(buttons[i][j].value,"-") == 0){
-                        PlaySound(click);
-                        buttons[i][j].value = player;
-                        if(strcmp(player,"x") == 0){
-                            player = "o";
-                        }else if(strcmp(player,"o") == 0){
-                            player = "x";
+            if(random){
+                for(int i = 0;i<3;i++){
+                    for(int j = 0;j<3;j++){
+                        if(buttons[i][j].isClicked() && strcmp(buttons[i][j].value,"-") == 0){
+                            PlaySound(click);
+                            buttons[i][j].value = "x";
+                            for(int z = 0;z<3;z++){
+                                for(int s = 0;s<3;s++){
+                                    if(strcmp(buttons[z][s].value,"-") == 0){
+                                        isFree = true;
+                                    }
+                                }
+                            }
+                            if(isFree){
+                                while(randomChoose){
+                                    if(strcmp(buttons[randomOne][randomTwo].value,"-") == 0){
+                                        buttons[randomOne][randomTwo].value = "o";
+                                        randomChoose = false;
+                                    }
+                                    randomOne = GetRandomValue(0,2);
+                                    randomTwo = GetRandomValue(0,2);
+                                }
+                                randomChoose = true;
+                            }
+                        }
+                    }
+                }
+            }else{
+                for(int i = 0;i<3;i++){
+                    for(int j = 0;j<3;j++){
+                        if(buttons[i][j].isClicked() && strcmp(buttons[i][j].value,"-") == 0){
+                            PlaySound(click);
+                            buttons[i][j].value = player;
+                            if(strcmp(player,"x") == 0){
+                                player = "o";
+                            }else if(strcmp(player,"o") == 0){
+                                player = "x";
+                            }
                         }
                     }
                 }
             }
+            
             }
             if(checkWin(buttons,"x")){
 
@@ -97,12 +133,7 @@ int main(){
                         buttons[i][j].value = "-";
                     }
                 }
-            }
-            
-
-
-        
-            
+            }  
         EndDrawing();
     }
     CloseWindow();  
